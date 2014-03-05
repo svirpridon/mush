@@ -1,0 +1,159 @@
+& books
+& book
+______________________________________________________________________________
+0=0=0  The Annointed: help on books
+ |||
+ |||   Books, in our IC world have been made to act as close to books in
+ |||   the real world as is feasably possible. Things you can't do with an
+ |||   IC book are things like hilighting/editing. Once you've written on
+ |||   them, that's it. However, unlike real life, you can write as much on
+ |||   a single page as you wish provided that you write it all at one
+ |||   time. (I suggest keeping your length reasonable or it'll be too long
+ |||   on each page)
+ |||   
+ |||   Books have the following 'commands' associated with them:
+ |||	close		look		flip		length (wiz/owner)
+ |||	read		preview		use		write
+ |||   (to access help on these, type 'help book <topic>')
+ |||
+0=0=0  See also: 'help local'
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+& book close
+& books close
+______________________________________________________________________________
+0=0=0  The Annointed: help on books 'close' command
+ |||
+ |||   Closing a book is obviously what you do when you're done with it. It
+ |||   will cause you to close the book (so that you can then drop it --
+ |||   you can't drop a open book). Closing a book will also cause the book
+ |||   to ignore further commands you try to use on it (except look and
+ |||   use).
+ |||   
+ |||   Syntax:
+ |||	close <book name>
+ |||   
+0=0=0  See also: 'help books'
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+& book look
+& books look
+______________________________________________________________________________
+0=0=0  The Annointed: help on books 'look' command
+ |||
+ |||   Books will show different things when they are looked at, based on
+ |||   if you are using the book and have it open right now or not. If the
+ |||   book is closed, all you'll ever see is the cover. If it's open, the
+ |||   book will either show it's internal pages.
+ |||   
+0=0=0  See also: 'help books'
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+& book flip
+& books flip
+______________________________________________________________________________
+0=0=0  The Annointed: help on books 'flip' command
+ |||
+ |||   Flip is a command to move a book to another page to read it. This
+ |||   command is nice when you want to go to a specific page further on in
+ |||   the book or further previous, but it's not that nice to just read
+ |||   through a book. Consider using 'read' instead to combine a 'look and
+ |||   flip to next page' command in that case.
+ |||   
+ |||   Syntax:
+ |||	flip <book name> to <page number>
+ |||   
+0=0=0  See also: 'help books'
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+& book length
+& books length
+______________________________________________________________________________
+0=0=0  The Annointed: help on books 'length' command
+ |||
+ |||   Length is a wizard or book owner only command that will adjust the
+ |||   length of a book. You can increase and decrease the length (actually
+ |||   it sets the length to whatever number you provide and won't accept
+ |||   negative values) by any amount. Setting a length of 0 will give you
+ |||   the cover of a book with no pages only.
+ |||   
+ |||   Note that if you set the length below the current length it will
+ |||   simply truncate any text past the new length, and that text will be
+ |||   lost.
+ |||   
+ |||   Syntax:
+ |||	length <book name>=<num pages>
+ |||   
+0=0=0  See also: 'help books'
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+& book read
+& books read
+______________________________________________________________________________
+0=0=0  The Annointed: help on books 'read' command
+ |||
+ |||   Read is a command which combines 'look' and 'flip' to allow you to
+ |||   easialy read through a book, as you would in real life. Each time
+ |||   you read a book, you will first look at the current page, then flip
+ |||   to the next page.
+ |||   
+ |||   Syntax:
+ |||	read <book name>
+ |||   
+0=0=0  See also: 'help books'
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+& book preview
+& books preview
+______________________________________________________________________________
+0=0=0  The Annointed: help on books 'preview' command
+ |||
+ |||   The preview command is included for those writing in books, so that
+ |||   you can preview how your text is going to get formatted before you
+ |||   actually write it into the book permenantly.
+ |||   
+ |||   Note that this command does all the checking that a write command
+ |||   will, the only difference is that it doesn't actually have you write
+ |||   in the book. Any errors here, such as "Invalid page" or "You can't
+ |||   seem to write in the book" are the same errors you will get if you
+ |||   tried to write into the book without fixing the error.
+ |||
+ |||   If you're using raw telnet, or some other connection method without
+ |||   command recall, consider writing your text in an attribute on your
+ |||   player, and then using a <text> block of
+ |||   '[v(attribute_you_wrote_text_in)]' to retrieve that text.
+ |||   
+ |||   Syntax:
+ |||	preview <book name>=<text>
+ |||   
+0=0=0  See also: 'help books'
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+& book use
+& books use
+______________________________________________________________________________
+0=0=0  The Annointed: help on books 'use' command
+ |||
+ |||   The use command really isn't a command on the book, it's the MUSH's
+ |||   builtin 'use' command. However, this is the method you should use to
+ |||   open up a book so that you can read it in, or write in it, etc.
+ |||   
+ |||   Syntax:
+ |||	use <book name>
+ |||
+0=0=0  See also: 'help books'
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+& book write
+& books write
+______________________________________________________________________________
+0=0=0  The Annointed: help on books 'write' command
+ |||
+ |||   The write command is used, obviously, to write text into a book. You
+ |||   can only write text on empty pages, and may not add text to an
+ |||   already written on page (unless you are a wizard or the owner of the
+ |||   book). You will probably but not necessarialy need a 'pen' or
+ |||   'quill' object to actually be able to write in the book, depending
+ |||   on your local configuration (you'll get an error if you need it).
+ |||   
+ |||   Writing always occurs on the current page of the book, and if you
+ |||   have permissions to overwrite previous text, it will do so SILENTLY,
+ |||   so be careful with it.
+ |||   
+ |||   Syntax:
+ |||	write <book name>=<text>
+ |||   
+0=0=0  See also: 'help books'
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

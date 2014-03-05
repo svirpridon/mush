@@ -1,0 +1,44 @@
+& friends-list
+& friend-list
+& friend
+______________________________________________________________________________
+0=0=0  The Annointed: help on friends-lists for ADVANCED USERS
+ |||   
+ |||   The messages the friends-list sends you when someone connects or
+ |||   disconnects are user-configurable. Simply put the message to be
+ |||   displayed on (connect/disconnect) in your
+ |||   (FRIEND_CONNECTED/FRIEND_DISCONNECTED) attribute, and use '%0' to
+ |||   reference their name.
+ |||   
+ |||   FRIEND_ALL_CONNECTED/FRIEND_ALL_DISCONNECTED work the same way as
+ |||   FRIEND_CONNECTED/FRIEND_DISCONNECTED, except they are used for the
+ |||   '+friend' command to show everyone on your list who is
+ |||   (dis)connected. They will be passed a list of names seperated by
+ |||   '@'s in '%0'.
+ |||   
+ |||   You may use functions in these attributes. The functions will be
+ |||   evaluated as if you had typed them though, so don't bother trying
+ |||   to hack special privs with them.
+ |||
+0=0=0  See also: 'help +friends'
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+& +friends
+& +friend
+______________________________________________________________________________
+0=0=0  The Annointed: help on +friends command
+ |||
+ |||   The friends-list is a global system on the MUSH to help people
+ |||   track if their friends are on or off the MUSH without having these
+ |||   connections be announced to everyone, possibly multiple times. The
+ |||   commands for the system are:
+ |||
+ |||		+friend/add <name>      Adds <name> to your friends-list
+ |||		+friend/remove <name>   Removes <name> from your list
+ |||		+friend/list            Shows who is on your friends-list
+ |||		+friend                 Shows a summary (who's on/off now)
+ |||
+ |||   Note: You may use '+friends' as a synonym for '+friend' in any of
+ |||   these commands.
+ |||
+0=0=0  See also: 'help friends-lists'
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

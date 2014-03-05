@@ -1,0 +1,91 @@
+@@ Object: Master Book Object
+@@ Version: 1.0beta
+@@ Author: Jonathan A. Booth
+@@ URL: https://github.com/svirpridon
+@@ Date: Mar 21, 1999
+@@ Written for: PennMUSH 1.7.2 pl21
+@@ Author is willing to support: No
+@@
+@@ This script creates a master book object, which you can take and
+@@ parent children objects to to make them into books.
+@@ 
+@@ See the "Master_Book_Object.hlp" file for help on it -- it's
+@@ written in PennMUSH hardcode help format.
+@@
+
+@create Master Book Object
+@link Master Book Object = me
+@lock/user:CAN_LENGTH Master Book Object=FUN_BOOK_CAN_LENGTH/1
+@lock/user:CAN_CLOSE Master Book Object=FUN_BOOK_CAN_CLOSE/1
+@lock/user:CAN_OPEN Master Book Object=FUN_BOOK_CAN_OPEN/1
+@lock/user:CAN_WRITE Master Book Object=FUN_BOOK_CAN_WRITE/1
+@lock/user:CAN_READ Master Book Object=FUN_BOOK_CAN_READ/1
+@set Master Book Object = NO_COMMAND
+&LICENSE Master Book Object=Copyright 1999, Jonathan A. Booth (https://github.com/svirpridon). Licensed under CC by-nc-sa 4.0.
+@set Master Book Object/LICENSE=visual
+&VERSION Master Book Object=Version 1.0beta
+@set Master Book Object/VERSION=visual
+&FUN_BOOK_CAN_WRITE_WITH_QUILL Master Book Object=gt(match(iter(lcon(%#),lparent(##)),locate(first(rest(revwords(lparent(me)))),Master Quill Object,Tn)),0)
+&NOTE_FUN_BOOK_CAN_WRITE Master Book Object=If you want someone to not need a quill to write in the book (but need to own it), copy FUN_BOOK_CAN_WRITE_WITHOUT_QUILL to FUN_BOOK_CAN_WRITE, otherwise, if they do need a quill, either make a object called Master Quill Object owned by the same person who ownes the book, and put it with the book parent object, and copy FUN_BOOK_CAN_WRITE_WITH_QUILL to FUN_BOOK_CAN_WRITE.
+&FUN_BOOK_CAN_WRITE_WITHOUT_QUILL Master Book Object=strmatch(%#,owner(me))
+&FUN_BOOK_CAN_LENGTH Master Book Object=cor(strmatch(%#,owner(me)),hasflag(%#,wizard))
+&CMD_LENGTH Master Book Object=$^length (.+)=([0-9]+)$:think setq(0,locate(num(me),secure(%1),*));@sel strmatch(%q0,num(me))=1,{@sel elock(me/CAN_LENGTH,%#)=1,{@pemit %#=You set [name(me)]'s length to be %2 pages.;&data_text_max_pages me=%2;@sel dec(words(v(data_text),|))=<%2,{&data_text me=[v(data_text)][repeat(|,inc(sub(%2,words(v(data_text),|))))]},>%2,{&data_text me=[extract(v(data_text),1,inc(%2),|)]}},{@pemit %#=Permission denied.}}
+@set Master Book Object/CMD_LENGTH=regexp
+&FUN_SETUP Master Book Object=iter(CAN_CLOSE CAN_OPEN CAN_WRITE CAN_READ CAN_LENGTH,lock(me/USER:##,FUN_BOOK_##/1))[lock(me/use,FUN_BOOK_USE_LOCK/1)][lock(me/enter,=#0)][set(me,!no_command)]
+&FUN_OBJ_NAME Master Book Object=Book [trim(%0,#)]
+@UFAIL Master Book Object=You have to be holding [name(me)] to be able to use it.
+@set Master Book Object/UFAIL=no_command
+&CMD_SETUP Master Book Object=$setup:@sel cor(strmatch(%#,owner(me)),hasflag(%#,wizard))=1,{@dol CAN_CLOSE CAN_OPEN CAN_WRITE CAN_READ CAN_LENGTH={@lock/user:## me=FUN_BOOK_##/1};@lock/use me=FUN_BOOK_USE_LOCK/1;@lock/enter me==#0},{@pemit %#=I don't think so.}
+&PREVIEW Master Book Object=You preview your text on [name(me)]:%r--[iter(%q2,%r[s(edit(edit(##,&hash;,#),&pipe;,|))],#)]%r--[if(not(u(FUN_PAGE_EMPTY,v(DATA_PAGE))),%r[ansi(rhf,center(%bWARNING%b,78,-))]%r[center(You are about to overwrite previous text on page [v(DATA_PAGE)]!,78)]%r[ansi(rhf,center(%bWARNING%b,78,-))])]
+&AWRITE Master Book Object=&DATA_TEXT me=[replace(v(DATA_TEXT),inc(v(DATA_PAGE)),%0,|)]
+&OWRITE Master Book Object=writes onto a page of [name(me)].
+&WRITE Master Book Object=You write onto page [v(DATA_PAGE)] in [name(me)].
+&CMD_WRITE Master Book Object=$^(write|preview) (.+)=(.+)$:think setq(0,locate(num(me),secure(%2),*))[setq(1,ucstr(%1))][setq(2,ulocal(FUN_PAGE_TRANSLATE,escape(%3)))];@sel strmatch(%q0,num(me)):[cor(u(FUN_PAGE_EMPTY,v(DATA_PAGE)),hasflag(%#,wizard),strmatch(%#,owner(me)))]:[elock(me/CAN_WRITE,%#)]=1:1:1,{@verb me=%#,%q1,,O%q1,,A%q1,%q2},1:0:*,{@pemit %#=You're trying to write on a page that you've already written.},1:*:0,{@pemit %#=You can not seem to write in [name(me)].}
+@set Master Book Object/CMD_WRITE=regexp case
+&FUN_PAGE_EMPTY Master Book Object=not(strlen(u(FUN_PAGE_GET,inc(%0))))
+&AFLIP Master Book Object=&data_page me=%0
+&OFLIP Master Book Object=flips some pages in [name(me)].
+&FLIP Master Book Object=You flip [name(me)] to page %q1.
+&CMD_FLIP Master Book Object=$^flip ((.+) to ([0-9]+)|(.+))$:think setq(0,locate(num(me),secure(%2%4),*))[setq(1,if(strlen(%3),%3,inc(mod(v(DATA_PAGE),v(DATA_TEXT_MAX_PAGES)))))];@sel strmatch(%q0,num(me)):[u(FUN_PAGE_VALID,%q1)]=1:1,{@verb me=%#,FLIP,,OFLIP,,AFLIP,%q1},1:0,{@pemit %#=You try to flip [name(me)] to a nonexistant page.}
+@set Master Book Object/CMD_FLIP=regexp
+&READ Master Book Object=You read a page in [name(me)].%r[u(DESCRIBE)]
+&OREAD Master Book Object=reads some of [name(me)].
+&AREAD Master Book Object=&data_page me=[inc(mod(v(DATA_PAGE),v(DATA_TEXT_MAX_PAGES)))]
+&CMD_READ Master Book Object=$^read (.+)$:think setq(0,locate(num(me),secure(%1),*));@sel strmatch(%q0,num(me)):[elock(me/CAN_READ,%#)]=1:1,{@verb me=%#,READ,,OREAD,,AREAD},1:0,{@pemit %#=You can not seem to read [name(me)].}
+@set Master Book Object/CMD_READ=regexp
+&FUN_LINE_WRAP Master Book Object=[setq(0,first(%0,#))][setq(1,rest(%0,#))][if(gt(strlen(s(edit(edit(%q0 %1,&hash;,#),&pipe;,|))),%q9),%1#%q0#%q1,%q0 %1#%q1)]
+&FUN_PAGE_LINE_WRAP Master Book Object=setq(9,v(DATA_TEXT_WIDTH))[revwords(trim(fold(FUN_LINE_WRAP,%0),#),#)]
+&FUN_PAGE_TRANSLATE Master Book Object=iter(escape(edit(edit(edit(edit(%0,#,&hash;),|,&pipe;),\\%%r,#),\\%%b,%%b)),u(FUN_PAGE_LINE_WRAP,##),#,#)
+&DATA_TEXT_WIDTH Master Book Object=70
+&NOTES Master Book Object=Translate on input: #=>&hash; |=>&pipe; %r=># %b=>%%b @@ Error: %t
+&FUN_BOOK_PRINT_PAGE_RIGHT Master Book Object=[space(8)]____[repeat(-,20)][repeat(_,16)]%r%b%b_--"""[space(40)][repeat(',13)][repeat(-,10)]____[iter(u(FUN_PAGE_GET,%0)#%b,%r[if(dec(#@),|| [ljust(edit(edit(##,&pipe;,|),&hash;,#),70)] || |,\\/ [ljust(edit(edit(##,&pipe;,|),&hash;,#),70)] |\\_)],#)]%r||[space(6)]____[repeat(-,20)][repeat(_,16)][space(12)] [rjust(dec(%0)/[v(DATA_TEXT_MAX_PAGES)],10)] %b%b||%b|%r||_--'''[repeat(=,40)][repeat(',13)][repeat(-,10)]___||%b|%r\\/[repeat(=,73)]\\ |%r[repeat(~,78)]
+&FUN_BOOK_PRINT_PAGE_LEFT Master Book Object=[space(30)][repeat(_,16)][repeat(-,20)]____%r%b%b%b____[repeat(-,10)][repeat(',13)][space(40)]'''--_[iter(u(FUN_PAGE_GET,%0)#%b,%r[if(not(dec(#@)),%b_/| [ljust(edit(edit(##,&pipe;,|),&hash;,#),70)] \\/,|%b|| [ljust(edit(edit(##,&pipe;,|),&hash;,#),70)] ||)],#)]%r|%b||%b%b [ljust(dec(%0)/[v(DATA_TEXT_MAX_PAGES)],10)] [space(12)][repeat(_,16)][repeat(-,20)]____%b%b%b%b%b%b||%r|%b||___[repeat(-,10)][repeat(',13)][repeat(=,40)]'''--_||%r| /[repeat(=,73)]\\/%r[repeat(~,78)]
+&CMD_CLOSE Master Book Object=$^close (.+)$:think setq(0,locate(num(me),secure(%1),*));@sel strmatch(%q0,num(me))=1,{@verb me=%#,CLOSE,,OCLOSE,,ACLOSE}
+@set Master Book Object/CMD_CLOSE=regexp
+&ACLOSE Master Book Object=&data_page me=0;&data_user me;@unlock/drop me
+&OCLOSE Master Book Object=closes [name(me)].
+&CLOSE Master Book Object=You close [name(me)].
+&FUN_BOOK_PRINT_COVER Master Book Object=%b[repeat(_,75)]%r|[space(75)]|[iter(u(FUN_PAGE_GET,%0),%r|[center(edit(edit(##,&pipe;,|),&hash;,#),75)]|[if(dec(#@),|)],#)]%r|[repeat(_,75)]||%r|\\[repeat(=,73)]| |%r\\|[repeat(=,73)]| |%r%b[repeat(~,77)]
+@OUSE Master Book Object=opens up [name(me)] and flips to the first page.
+@set Master Book Object/OUSE=no_command
+@USE Master Book Object=You open up [name(me)] and flip to the first page.%r[u(FUN_BOOK_PRINT,1)]
+@set Master Book Object/USE=no_command
+@AUSE Master Book Object=&data_user me=%#;&data_page me=2;@lock/drop me==me;@lock/use me=FUN_BOOK_USE_LOCK/1
+@set Master Book Object/AUSE=no_command
+&FUN_BOOK_CREATE Master Book Object=set(me,DATA_TEXT:[repeat(|,%0)])[set(me,DATA_TEXT_MAX_PAGES:%0)]
+&FUN_BOOK_USE_LOCK Master Book Object=if(not(hasattrval(%!,data_user)),cand(elock(%!/CAN_OPEN,%#),strmatch(%c,use *)),strmatch(v(data_user),%#))
+&DATA_PAGE Master Book Object=0
+@DESCRIBE Master Book Object=u(fun_book_print,v(data_page))
+@set Master Book Object/DESCRIBE=no_command visual
+&FUN_BOOK_PRINT Master Book Object=if(%0,if(not(elock(me/CAN_READ,%#,%0)),u(FUN_BOOK_PRINT_PAGE_[if(mod(%0,2),LEFT,RIGHT)],inc(%0)),{You see a book with some text on it. You are unable to read the text.}),u(FUN_BOOK_PRINT_COVER,inc(%0)))
+&FUN_BOOK_CAN_CLOSE Master Book Object=1
+&FUN_BOOK_CAN_OPEN Master Book Object=strmatch(%#,loc(num(me)))
+&FUN_BOOK_CAN_WRITE Master Book Object=strmatch(%#,owner(me))
+&FUN_BOOK_CAN_READ Master Book Object=1
+&FUN_PAGE_FLIP_NEXT Master Book Object=u(FUN_PAGE_FLIP_TO,inc(v(DATA_PAGE)))
+&FUN_PAGE_FLIP_TO Master Book Object=set(me,DATA_PAGE:[mod(%0,v(DATA_TEXT_MAX_PAGES))])
+&FUN_PAGE_VALID Master Book Object=cand(lte(%0,v(DATA_TEXT_MAX_PAGES)),gte(%0,0))
+&FUN_PAGE_SET Master Book Object=set(me,DATA_TEXT:[replace(v(DATA_TEXT),%0,u(FUN_PAGE_TRANSLATE,%1,v(DATA_TEXT_WIDTH)),|)])
+&FUN_PAGE_GET Master Book Object=extract(v(DATA_TEXT),%0,1,|)
+&DATA_TEXT_MAX_PAGES Master Book Object=5
+&DATA_TEXT Master Book Object=How to use a book.#Written by: Kami#Copyright 1999%, Jonathan A. Booth (ex [if(isdbref(parent(me)),parent(me),num(me))]/LICENSE)##(See 'help book' for help on books and scrolls.)#(Or use 'use [name(me)]' to open the book to read some help.)|Commands:#%b%b[ljust(look <book>,25)]Shows you the text of the book#%b%b[ljust(flip <book>\[ to <page>\],25)]Flips book by 1 page or to <page>#%b%b[ljust(length <book>=<num>,25)]Makes <book> have <num> pages#%b%b[ljust(read <book>,25)]Read the text and flip a page#%b%b[ljust(preview <book>=<text>,25)]Preview text before writing it#%b%b[ljust(write <book>=<text>,25)]Write text into a book. Irreversable!#%b%b[ljust(close <book>,25)]Close the book so you can drop it.|Page three is empty.||Page four.|Page five. Kinda boring pages except for page 1%, eh?
